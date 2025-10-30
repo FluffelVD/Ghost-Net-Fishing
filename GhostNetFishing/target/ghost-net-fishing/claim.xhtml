@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Bergung bestätigen</title>
+    <h:outputStylesheet library="css" name="style.css" />
+</h:head>
+<h:body>
+    <div class="container">
+        <h2>Bergung für Netz #<h:outputText value="#{netController.netToClaim.id}" /> übernehmen</h2>
+        <p>Vielen Dank, dass Sie helfen! Bitte geben Sie Ihren Namen und eine Telefonnummer an.</p>
+        <h:form>
+            <p:messages id="claimMessages" showSummary="true" showDetail="false" closable="true" />
+            <p:panelGrid columns="2" styleClass="form-grid" style="margin-bottom: 20px;">
+                <p:outputLabel for="name" value="Ihr Name:" />
+                <p:inputText id="name" value="#{netController.salvager.name}" required="true" requiredMessage="Bitte geben Sie einen Namen an." validatorMessage="Ungültiger Name.">
+                    <f:validateRegex pattern="^[a-zA-ZÀ-ž\s-]+$" />
+                </p:inputText>
+                <p:outputLabel for="phonePrefix" value="Ihre Telefonnummer:" />
+                <p:panelGrid columns="2" styleClass="ui-noborder phone-grid">
+                    <p:inputText id="phonePrefix" placeholder="Vorwahl" value="#{netController.salvager.phonePrefix}" required="true" requiredMessage="Vorwahl fehlt."><p:keyFilter regEx="/[0-9+]/" /></p:inputText>
+                    <p:inputText id="phoneNumber" placeholder="Nummer" value="#{netController.salvager.phoneNumber}" required="true" requiredMessage="Nummer fehlt."><p:keyFilter regEx="/[0-9]/" /></p:inputText>
+                </p:panelGrid>
+            </p:panelGrid>
+            <p:commandButton value="Bergung jetzt bestätigen" action="#{netController.confirmClaim}" update="@form"/>
+        </h:form>
+    </div>
+</h:body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Ghost Net Fishing Initiative</title>
+    <h:outputStylesheet library="css" name="style.css" />
+</h:head>
+
+<h:body>
+    <div class="container">
+        <p><strong>Hinweis des Entwicklers:</strong> Dieser Prototyp dient der Demonstration und Veranschaulichung der
+            Kernfunktionen der 'Ghost Net Fishing' Anwendung.</p>
+
+        <h1>Willkommen bei der "Ghost Net Fishing" Initiative!</h1>
+        <p>
+            Ihre gewählte Rolle ist: <strong>#{netController.userRole eq 'meldend' ? 'Meldende Person' : 'Bergende
+                Person'}</strong>.
+            Basierend darauf sehen Sie die verfügbaren Aktionen.
+        </p>
+        <p>Was möchten Sie tun?</p>
+
+        <h:form>
+            <div class="form-actions-startpage">
+                <p:commandButton value="Ein Geisternetz melden" action="report.xhtml?faces-redirect=true"
+                    rendered="#{netController.userRole eq 'meldend'}" styleClass="ui-button-primary"
+                    icon="pi pi-plus" />
+
+                <p:commandButton value="Zu bergende Netze anzeigen" action="dashboard.xhtml?faces-redirect=true"
+                    rendered="#{netController.userRole eq 'bergend'}" styleClass="ui-button-success"
+                    icon="pi pi-list" />
+
+                <p:commandButton value="Netze auf Karte anzeigen" action="map.xhtml?faces-redirect=true"
+                    rendered="#{netController.userRole eq 'bergend'}" styleClass="ui-button-info"
+                    icon="pi pi-map-marker" />
+
+                <p:commandButton value="Rolle wechseln" action="roleSelection.xhtml?faces-redirect=true"
+                    immediate="true" styleClass="ui-button-secondary" icon="pi pi-refresh" />
+            </div>
+        </h:form>
+    </div>
+</h:body>
+
+</html>

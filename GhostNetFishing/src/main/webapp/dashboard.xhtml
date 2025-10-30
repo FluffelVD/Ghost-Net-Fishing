@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Dashboard – Offene Bergungen</title>
+    <h:outputStylesheet library="css" name="style.css" />
+</h:head>
+
+<h:body>
+    <p:growl id="dashboardGrowl" showDetail="true" />
+
+    <div class="container">
+        <h2>Noch zu bergende Geisternetze</h2>
+        <p>
+            Diese Liste zeigt alle aktuell gemeldeten Netze, die noch geborgen werden müssen. Die Spalte "Kontakt"
+            zeigt immer den aktuell zuständigen Ansprechpartner an. Sobald eine Bergung übernommen wird,
+            wechselt die Anzeige auf die Kontaktdaten der bergenden Person.
+        </p>
+
+        <h:form id="dashboardForm">
+            <p:dataTable id="netTable" value="#{netController.openNets}" var="net"
+                emptyMessage="Aktuell gibt es keine offenen Meldungen." paginator="true" rows="10"
+                styleClass="responsive-table">
+                <p:column headerText="ID" sortBy="#{net.id}" style="width:50px; text-align:center;">
+                    <h:outputText value="#{net.id}" />
+                </p:column>
+                <p:column headerText="Gemeldet von" sortBy="#{net.reporter.name}">
+                    <h:outputText value="#{net.reporter != null ? net.reporter.name : 'Anonym'}" />
+                </p:column>
+                <p:column headerText="Koordinaten" sortBy="#{net.gpsCoordinates}">
+                    <h:outputText value="#{net.gpsCoordinates}" />
+                </p:column>
+                <p:column headerText="Größe" sortBy="#{net.estimatedSize}">
+                    <h:outputText value="#{net.estimatedSize}" />
+                </p:column>
+                <p:column headerText="Status" sortBy="#{net.status}">
+                    <p:tag severity="#{net.status eq 'GEMELDET' ? 'warning' : 'info'}" value="#{net.status}"
+                        rounded="true" />
+                </p:column>
+                <p:column headerText="Bergung durch" sortBy="#{net.salvager.name}">
+                    <h:outputText value="#{net.salvager != null ? net.salvager.name : '-'}" />
+                </p:column>
+                <p:column headerText="Kontakt">
+                    <h:outputText
+                        value="#{net.salvager != null ? net.salvager.phonePrefix.concat(' ').concat(net.salvager.phoneNumber) : (net.reporter != null and net.reporter.phoneNumber != null ? net.reporter.phonePrefix.concat(' ').concat(net.reporter.phoneNumber) : '-')}" />
+                </p:column>
+                <p:column headerText="Aktion" styleClass="action-column">
+                    <p:commandButton value="Bergung übernehmen" action="#{netController.prepareClaim(net)}"
+                        rendered="#{net.status eq 'GEMELDET'}" styleClass="ui-button-primary action-button" />
+                    <p:commandButton value="Als geborgen melden" action="#{netController.markAsRecovered(net)}"
+                        rendered="#{net.status eq 'BERGUNG BEVORSTEHEND'}"
+                        update="dashboardForm:netTable dashboardGrowl" styleClass="ui-button-success action-button" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <div class="form-actions">
+            <p:commandButton value="Zurück zur Startseite" action="#{netController.goHome}" immediate="true"
+                styleClass="ui-button-secondary action-button" />
+        </div>
+    </div>
+</h:body>
+
+</html>

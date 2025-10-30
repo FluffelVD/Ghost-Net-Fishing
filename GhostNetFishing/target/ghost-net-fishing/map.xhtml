@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Kartenansicht - Offene Bergungen</title>
+    <h:outputStylesheet library="css" name="style.css" />
+    <h:outputStylesheet library="leaflet" name="leaflet.css" />
+    <h:outputScript library="leaflet" name="leaflet.js" />
+    <style>
+        #map { height: 600px; }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="container">
+        <h2>Kartenansicht der Geisternetze</h2>
+        <p>Diese Karte zeigt die Standorte aller gemeldeten und noch nicht geborgenen Netze.</p>
+
+        <div id="map"></div>
+
+        <h:form style="margin-top:20px;">
+             <p:commandButton value="Zurück zur Startseite" action="index.xhtml" />
+        </h:form>
+    </div>
+
+    <script>
+        // Schritt 1: Definiere die Standard-Icon-Optionen neu und nutze JSF, 
+        // um die 100% korrekten Pfade zu den Bildern zu generieren.
+        delete L.Icon.Default.prototype._getIconUrl; // Entferne die alte Pfad-Logik
+        L.Icon.Default.mergeOptions({
+            iconRetinaUrl: '#{resource["leaflet:images/marker-icon-2x.png"]}',
+            iconUrl: '#{resource["leaflet:images/marker-icon.png"]}',
+            shadowUrl: '#{resource["leaflet:images/marker-shadow.png"]}'
+        });
+
+        // Schritt 2: Erstelle die Karte wie gewohnt.
+        var map = L.map('map').setView([50.0, 15.0], 4);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        var nets = JSON.parse('#{netController.openNetsAsJson}');
+
+        nets.forEach(function(net) {
+            if (net.lat &amp;&amp; net.lng) {
+                L.marker([net.lat, net.lng])
+                 .addTo(map)
+                 .bindPopup(net.info);
+            }
+        });
+    </script>
+    </h:body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Neues Geisternetz erfassen</title>
+    <h:outputStylesheet library="css" name="style.css" />
+</h:head>
+
+<h:body>
+    <div class="container">
+        <h2>Neues Geisternetz erfassen</h2>
+        <p>
+            Geben Sie die GPS-Koordinaten an. Die meisten gängigen Formate wie
+            <b>54.3512, 10.1415</b> oder <b>54.3512° N, 10.1415° E</b> werden akzeptiert.
+        </p>
+
+        <h:form id="reportForm">
+            <p:messages id="globalMessages" showSummary="true" showDetail="false" closable="true" globalOnly="true" />
+
+            <div class="checkbox-inline">
+                <p:selectBooleanCheckbox id="anonymousCheckbox" value="#{netController.anonymous}">
+                    <p:ajax update="personalDataPanel" />
+                </p:selectBooleanCheckbox>
+                <p:outputLabel styleClass="ml5" for="anonymousCheckbox" value="Ich möchte anonym bleiben" />
+            </div>
+
+            <h:panelGroup id="personalDataPanel" layout="block">
+                <p:panelGrid columns="2" styleClass="form-grid ui-noborder" rendered="#{!netController.anonymous}">
+                    <p:outputLabel for="reporterName" value="Ihr Name:" />
+                    <p:inputText id="reporterName" value="#{netController.reporter.name}"
+                        required="#{!netController.anonymous}" requiredMessage="Bitte geben Sie Ihren Namen an."
+                        validatorMessage="Ungültiger Name.">
+                        <f:validateRegex pattern="^[a-zA-ZÀ-ž\s-]+$" />
+                    </p:inputText>
+
+                    <p:outputLabel for="phonePrefix" value="Ihre Telefonnummer:" />
+                    <p:panelGrid columns="2" styleClass="ui-noborder phone-grid">
+                        <p:inputText id="phonePrefix" placeholder="Vorwahl"
+                            value="#{netController.reporter.phonePrefix}" required="#{!netController.anonymous}"
+                            requiredMessage="Vorwahl fehlt.">
+                            <p:keyFilter regEx="/[0-9+]/" />
+                        </p:inputText>
+                        <p:inputText id="phoneNumber" placeholder="Nummer" value="#{netController.reporter.phoneNumber}"
+                            required="#{!netController.anonymous}" requiredMessage="Nummer fehlt.">
+                            <p:keyFilter regEx="/[0-9]/" />
+                        </p:inputText>
+                    </p:panelGrid>
+                </p:panelGrid>
+            </h:panelGroup>
+
+            <p:panelGrid columns="2" styleClass="form-grid ui-noborder" style="margin-top: 15px;">
+                <p:outputLabel for="coords" value="GPS-Koordinaten:" />
+                <p:inputText id="coords" value="#{netController.newNet.gpsCoordinates}" required="true"
+                    requiredMessage="Bitte geben Sie die GPS-Koordinaten an." validatorMessage="Ungültiges GPS-Format.">
+                    <f:validateRegex
+                        pattern="^\s*-?\d{1,2}(\.\d+)?\s*(°)?\s*[NnSs]?,?\s*-?\d{1,3}(\.\d+)?\s*(°)?\s*[EeWw]?\s*$" />
+                </p:inputText>
+
+                <p:outputLabel for="size" value="Geschätzte Größe:" />
+                <p:selectOneMenu id="size" value="#{netController.newNet.estimatedSize}" required="true"
+                    requiredMessage="Bitte wählen Sie eine Größe.">
+                    <f:selectItem itemValue="" itemLabel="Bitte wählen..." noSelectionOption="true" />
+                    <f:selectItem itemValue="Klein (&lt; 10m²)" itemLabel="Klein (&lt; 10m²)" />
+                    <f:selectItem itemValue="Mittel (10–50m²)" itemLabel="Mittel (10–50m²)" />
+                    <f:selectItem itemValue="Groß (&gt; 50m²)" itemLabel="Groß (&gt; 50m²)" />
+                </p:selectOneMenu>
+            </p:panelGrid>
+
+            <div class="form-actions-startpage">
+                <p:commandButton value="Meldung absenden" action="#{netController.reportNet}" update="@form"
+                    styleClass="ui-button-primary action-button" />
+                <p:commandButton value="Zurück zur Startseite" action="index.xhtml?faces-redirect=true" immediate="true"
+                    styleClass="ui-button-secondary action-button" />
+            </div>
+        </h:form>
+    </div>
+</h:body>
+
+</html>
