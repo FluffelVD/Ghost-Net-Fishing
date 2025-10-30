@@ -1,0 +1,78 @@
+/* ==============================
+    1. Konfiguration & Variablen
+    ============================== */
+:root {
+    /* Farben */
+    --primary-color: #007ad9;
+    --primary-hover-color: #005fa3;
+    --secondary-color: #6c757d;
+    --secondary-hover-color: #565e64;
+    --success-color: #28a745;
+    --success-hover-color: #218838;
+    --info-color: #17a2b8;
+    --info-hover-color: #138496;
+    --danger-color: #d9534f;
+    --text-color: #222;
+    --text-muted-color: #444;
+    --background-color: #f7f8fc;
+    --surface-color: #fff;
+    --border-color: #f1f3f5;
+    /* Typografie & Abstände */
+    --font-family: "Segoe UI", Arial, sans-serif;
+    --border-radius: 8px;
+    --container-padding: 30px 36px;
+}
+
+/* ==============================
+    2. Grundlayout
+    ============================== */
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 90vw;
+    margin: 40px auto;
+    background: var(--surface-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    padding: var(--container-padding);
+    box-sizing: border-box;
+}
+
+h1, h2 {
+    color: #0d47a1;
+    margin-bottom: 10px;
+}
+
+p {
+    margin-bottom: 14px;
+    color: var(--text-muted-color);
+    line-height: 1.5;
+}
+
+/* ==============================
+    3. Formularelemente & Buttons
+    ============================== */
+.form-actions-left {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-top: 24px;
+}
+
+.form-actions-startpage {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap; 
+}
+
+.ml5{
+    margin-left: 0.5em !important;
+}

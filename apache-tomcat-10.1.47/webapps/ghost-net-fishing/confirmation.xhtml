@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Meldung erfolgreich</title>
+    <h:outputStylesheet library="css" name="style.css" />
+</h:head>
+
+<h:body>
+    <div class="container">
+        <h2>Vielen Dank für Ihre Meldung!</h2>
+
+        <p>
+            Ihre Meldung wurde erfolgreich übermittelt und im System gespeichert.
+            Vielen Dank für Ihren Beitrag zum Schutz unserer Meere.
+        </p>
+
+        <p>
+            <b>Hinweis:</b> Falls Sie Ihre Kontaktdaten angegeben haben,
+            können wir Sie bei Rückfragen kontaktieren. Anonyme Meldungen
+            werden selbstverständlich vertraulich behandelt.
+        </p>
+
+        <div class="form-actions" style="margin-top: 30px;">
+            <h:form>
+                <p:commandButton value="Weitere Meldung erfassen" action="report.xhtml?faces-redirect=true"
+                    styleClass="ui-button-primary action-button" style="margin-right: 15px;" />
+
+                <p:commandButton value="Zurück zur Startseite" action="index.xhtml?faces-redirect=true"
+                    styleClass="ui-button-secondary action-button" />
+            </h:form>
+        </div>
+    </div>
+</h:body>
+
+</html>
